@@ -22,8 +22,6 @@
  *      
  */
 
-namespace ipt-php;
-
 class iptables
 {
 
@@ -77,9 +75,78 @@ class iptables
 			  die('Error: ' . mysql_error());
 			  }
 
-		//print_r($sql);
 		echo "Mod nat 1:1 rules ".$value['ip_pubb']." -> ".$value['ip_priv']."<br />";
 	
 	}
+	
+	public function addMasq($value){
+/*
+		il masquarade viene applicato sulla catena di POSTROUTING e si ha la possibilità di impostarlo su una interfaccia di output
+		oppure dedicere di applicarlo ad una determinata source nat e farla mascherare con altra network
+		RICORDA la netmask associata al comenaod deve essere in notazione CDIR
+*/
+		
+		//prelievo l'id della chain corretta:
+		$sql_chain = "SELECT id_tables from ipt_table WHERE name = 'nat' AND chain = 'POSTROUTING'";
+		$value['id_tables'] = mysql_query($sql_chain);
+		
+		if(isset($value['masq_network']) && isset($value['masq_netmask']) && isset($value['masq_network2']) && isset($value['masq_network2']))
+		{
+			$sql="INSERT INTO ipt_masq (masq_interface,masq_network,masq_netmask,masq_network2,masq_netmask2,id_tables)
+					VALUES
+					('".$value['masq_interface']."','".$value['masq_network']."','".$value['masq_netmask']."','".$value['masq_network2']."','".$value['masq_netmask2']."','".$value['id_tables']."')";
+
+		} else {
+			$sql="INSERT INTO ipt_masq (masq_interface,id_tables) VALUES ('".$value['masq_interface']."','".$value['id_tables']."')";
+			
+			}
+
+			if (!mysql_query($sql))
+				  {
+			  die('Error: ' . mysql_error());
+		  }
+
+		//print_r($sql);
+		echo "Added new masquarade rules ".$value['masq_interface']."<br />";
+		}
+	
+	public function modMasq($id,$value){
+		if(isset($value['masq_network']) && isset($value['masq_netmask']) && isset($value['masq_network2']) && isset($value['masq_network2']))
+		{
+		$sql="UPDATE ipt_masq set masq_interface = '".$value['masq_interface']."',
+									masq_network = '".$value['masq_network']."',
+									masq_netmask = '".$value['masq_netmask']."',
+									masq_network2 = '".$value['masq_network2']."',
+									masq_netmask2 = '".$value['masq_netmask2']."',
+									id_tables = '".$value['id_tables']."'
+									WHERE id_masq='".$id."')";
+			} else {
+			$sql="UPDATE ipt_masq set masq_interface = '".$value['masq_interface']."',
+									id_tables = '".$value['id_tables']."'
+									WHERE id_masq='".$id."')";
+			
+			}
+
+			if (!mysql_query($sql))
+				  {
+			  die('Error: ' . mysql_error());
+		  }
+
+		//print_r($sql);
+		echo "MOD masquarade rules with id ".$id."<br />";
+		}
+		
+	public function remMasq($id){
+		$sql="DELETE FROM ipt_masq where id_nat =  '".$id."'";
+				//die(print_r($sql));
+
+		if (!mysql_query($sql))
+		  {
+			die('Error: ' . mysql_error());
+		  }
+
+		//print_r($sql);
+		echo "Remove masquarade rules with id ".$id."";
+		}
 
 }
