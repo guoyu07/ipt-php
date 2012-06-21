@@ -37,6 +37,49 @@ class iptables
 		// ...
 	}
 
-	// ...
+	// Gestione nat 1:1
+	public function addNat($value) {
+		$sql="INSERT INTO ipt_nat (id_tables, ip_pubb, ip_priv)
+				VALUES
+				('".$value['id_tables']."','".$value['ip_pubb']."','".$value['ip_priv']."')";
+
+
+			if (!mysql_query($sql))
+				  {
+			  die('Error: ' . mysql_error());
+		  }
+
+		//print_r($sql);
+		echo "Added new nat 1:1 rules ".$value['ip_pubb']." -> ".$value['ip_priv']."<br />";
+		
+	}
+	
+	public function remNat($id){
+		$sql="DELETE FROM ipt_nat where id_nat =  '".$id."'";
+				//die(print_r($sql));
+
+			if (!mysql_query($sql))
+			  {
+			  die('Error: ' . mysql_error());
+			  }
+
+		//print_r($sql);
+		echo "Remove nat 1:1 with id ".$id."";
+	
+	}
+	
+	public function modNat($id,$value){
+		$sql="update ipt_nat set ip_pubb = '".$value['ip_pubb']."', ip_priv = '".$value['ip_priv']."' where id_nat =  '".$id."'";
+				//die(print_r($sql));
+
+			if (!mysql_query($sql))
+			  {
+			  die('Error: ' . mysql_error());
+			  }
+
+		//print_r($sql);
+		echo "Mod nat 1:1 rules ".$value['ip_pubb']." -> ".$value['ip_priv']."<br />";
+	
+	}
 
 }
