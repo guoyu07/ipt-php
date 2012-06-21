@@ -1,0 +1,40 @@
+/****************************************************************************************
+*   Class   :   firewall
+*   Ver.    :   1.0
+*   Author  :   Andrea Salvatore Crisafulli  a.k.a. Xanio <xanio@nemesilabs.org>
+*   Date    :   201206
+*   License :   GPL License
+*
+*/
+
+Gestione iptables tramite interfaccia web PHP con aiuto di una base dati MySQL.
+Per l'integrazione in php è stata creata una classe che permette la creazione,
+modifica e cancellazione di rules:
+- NAT 1:1
+- Port Forwarding
+- Masquarade
+- Input/Output/Forward
+- Log
+
+Affinche il sistema funzioni è essenziale installare sudo e fare in modo che i 
+comandi per la gestione iptables siano gestibili dall'utente web.
+Attualmente i comandi da abilitare sono:
+
+- iptables-save		-> Permette il save delle rules
+- iptables-restore 	-> Permette il restore delle rules
+- iptables-xml		-> Permette l'esportazione delle rules in xml
+- xsltproc		-> Permette il passaggio delle rules in xml durate il restore
+
+Per la gestione basta installare sudo ed editare con visudo il contenuti aggiungendo
+
+## START ADD SUDOERS
+
+Cmnd_Alias IPTABLES =  /sbin/iptables-restore,  /usr/bin/xsltproc, /sbin/iptables-save
+www-data ALL=NOPASSWD : IPTABLES
+
+## END ADD SUDOERS
+
+Altro file essenziale per la gestione dell'xml di iptables è il template xml
+- iptables.xslt		-> Template xml
+
+
