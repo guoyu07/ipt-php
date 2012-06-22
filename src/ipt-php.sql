@@ -36,3 +36,13 @@ INSERT INTO `ipt_table` (`id_tables`, `name`, `chain`, `policy`) VALUES
 (4, 'filter', 'LOG', ''),
 (5, 'nat', 'PREROUTING', ''),
 (6, 'nat', 'POSTROUTING', '');
+
+CREATE TABLE  `ipt_pf` (
+`id_pf` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`pf_interface` VARCHAR( 10 ) NOT NULL ,
+`pf_protocol` VARCHAR( 10 ) NOT NULL ,
+`pf_port` INT( 6 ) UNSIGNED NOT NULL ,
+`pf_dnat` VARCHAR( 15 ) NOT NULL ,
+`pf_dport` INT( 6 ) UNSIGNED NOT NULL ,
+`id_tables` INT( 5 ) NULL
+) ENGINE = MYISAM COMMENT =  'Tabella Iptables Port Forwarding';

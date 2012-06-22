@@ -13,7 +13,6 @@ $link = mysql_connect($CFG['dbhost'], $CFG['dbuser'], $CFG['dbpass']);
 if (!$link) {
     die('Could not connect: ' . mysql_error());
 }
-echo 'Connected successfully';
 
 mysql_select_db($CFG['db']); 
 
@@ -23,6 +22,40 @@ switch($_POST['action']){
 
 		case modpf:
 			echo "MODIFICA PORT FORWARD WITH ID ".$_POST['value']."<br />";
+			echo "Tabella <b>Port Forward</b><br />";
+			echo "<table class='iptTable'>";
+			echo "<tr class='iptTable' >";
+			echo "<td class='iptTable'>ID Port Forward</td>
+						<td class='iptTable'>INTERFACE</td>
+						<td class='iptTable'>PROTOCOL</td>
+						<td class='iptTable'>PORT</td>
+						<td class='iptTable'>DESTINATION</td>
+						<td class='iptTable'>DESTINATION PORT</td>
+						<td></td>";
+			echo "</tr>";
+			echo "<tr class='iptTable'>";
+			echo "<td class='iptTable'>".$rsDati['id_pf']."</td>";
+			echo "<td class='iptTable'>".$rsDati['pf_interface']."</td>";
+			echo "<td class='iptTable'>".$rsDati['pf_protocol']."</td>";
+			echo "<td class='iptTable'>".$rsDati['pf_port']."</td>";
+			echo "<td class='iptTable'>".$rsDati['pf_dnat']."</td>";
+			echo "<td class='iptTable'>".$rsDati['pf_dport']."</td>";
+			echo "<td class='iptTable'>
+								<form name=\"mod_pf\" action=\"index.php\" method=\"POST\">
+								<input name=\"action\" type=\"image\" src=\"img/flagEdit.png\" alt=\"Modifica Rules\" title=\"Modify Rules ".$rsPF['id_pf']."\" value=\"modpf\">
+								<input name=\"value\" type=\"hidden\" value=\"".$rsPF['id_pf']."\">
+								<input name=\"array\" type=\"hidden\" value=\"".$rsPF."\">
+								</form>
+								<form name=\"del_pf\" action=\"index.php\" method=\"POST\">
+								<input name=\"action\" type=\"image\" src=\"img/flagRed.png\" alt=\"Cancella Rules\" title=\"Delete Rules ".$rsPF['id_pf']."\" value=\"delpf\">
+								<input name=\"value\" type=\"hidden\" value=\"".$rsPF['id_pf']."\">
+								<input name=\"array\" type=\"hidden\" value=\"".$rsPF."\">
+								</form>
+					  </td>";
+				echo "</tr>";
+				}
+				echo "</table>";
+			$ipt->modPF($_POST['value'],$rsDati)
 			break;
 		case delpf:
 			echo "ELIMINA PORT FORWARD WITH ID ".$_POST['value']."<br />";
@@ -81,10 +114,12 @@ switch($_POST['id']){
 								<form name=\"mod_pf\" action=\"index.php\" method=\"POST\">
 								<input name=\"action\" type=\"image\" src=\"img/flagEdit.png\" alt=\"Modifica Rules\" title=\"Modify Rules ".$rsPF['id_pf']."\" value=\"modpf\">
 								<input name=\"value\" type=\"hidden\" value=\"".$rsPF['id_pf']."\">
+								<input name=\"array\" type=\"hidden\" value=\"".$rsPF."\">
 								</form>
 								<form name=\"del_pf\" action=\"index.php\" method=\"POST\">
 								<input name=\"action\" type=\"image\" src=\"img/flagRed.png\" alt=\"Cancella Rules\" title=\"Delete Rules ".$rsPF['id_pf']."\" value=\"delpf\">
 								<input name=\"value\" type=\"hidden\" value=\"".$rsPF['id_pf']."\">
+								<input name=\"array\" type=\"hidden\" value=\"".$rsPF."\">
 								</form>
 					  </td>";
 				echo "</tr>";
