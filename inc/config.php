@@ -12,4 +12,7 @@ $CFG['dbuser'] = "iptables";
 $CFG['dbpass'] = "iptables";
 $CFG['db'] = "iptables";
 
+$proxy['ip_priv']= "192.168.1.200";
+$proxy['port'] = "3128";
+
 ?>

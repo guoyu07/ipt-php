@@ -46,3 +46,12 @@ CREATE TABLE  `ipt_pf` (
 `pf_dport` INT( 6 ) UNSIGNED NOT NULL ,
 `id_tables` INT( 5 ) NULL
 ) ENGINE = MYISAM COMMENT =  'Tabella Iptables Port Forwarding';
+
+CREATE TABLE  `iptables`.`ipt_log` (
+`id_log` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`log_name` VARCHAR( 50 ) NOT NULL ,
+`log_prefix` VARCHAR( 22 ) NOT NULL ,
+`log_level` INT( 1 ) UNSIGNED NOT NULL ,
+`log_tcp_options` BOOLEAN NOT NULL ,
+`log_ip_options` BOOLEAN NOT NULL
+) ENGINE = MYISAM COMMENT =  'Tabella Iptables LOG';
